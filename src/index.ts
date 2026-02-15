@@ -1,9 +1,10 @@
 // Imports your SCSS stylesheet
 import "@/styles/index.scss";
 
-let attemptsLeft = 3;
-let gameOver = false;
-const attemptsDisplay = document.getElementById("attempts") as HTMLSpanElement;
+let attemptsLeft = 3; //Set "lives" here
+let gameOver = false; //Sets clean gamestate
+const attemptsDisplay = document.getElementById("attempts") as HTMLSpanElement; //Grab the attempts/lives counter line
+
 const message = document.getElementById("message") as HTMLHeadingElement;
 
 attemptsDisplay.textContent = attemptsLeft.toString();
@@ -18,7 +19,7 @@ enum CardValue {
   Eight = 8,
   Nine = 9,
   Ten = 10,
-}
+} //Enum of cards so they are tracked more smoothly.
 
 interface Card {
   id: number;
@@ -26,7 +27,7 @@ interface Card {
   image: string;
   isFlipped: boolean;
   isMatched: boolean;
-}
+} //Interface used here to track the detailed states of each card
 
 const cardElement = document.createElement("div");
 cardElement.classList.add("card");
@@ -46,13 +47,13 @@ const board = document.getElementById("game-board") as HTMLDivElement;
 function createDeck(): Card[] {
   let id = 0;
 
-  // Step 1: Shuffle all possible values
+  // Step 1: Shuffle all possible values with a function.
   const shuffledValues = shuffle([...CARD_VALUES]);
 
-  // Step 2: Take only first 3 values
+  // Step 2: Take only first 3 values of the new shuffled cards
   const selectedValues = shuffledValues.slice(0, 3);
 
-  // Step 3: Create pairs
+  // Step 3: Create pairs of the 3 cards made.
   const cards: Card[] = selectedValues.flatMap((value) => [
     {
       id: id++,
@@ -74,7 +75,7 @@ function createDeck(): Card[] {
   return shuffle(cards);
 }
 
-// Shuffle
+// Shuffle taking the entire card array via shorthand, randomizing the array item location
 function shuffle<T>(array: T[]): T[] {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -121,7 +122,7 @@ function checkMatch() {
       if (attemptsLeft === 0) {
         endGame();
       }
-    }, 1000);
+    }, 1000); //How long till the card flips back over when wrong. Felt this is long enough.
     return;
   }
 
