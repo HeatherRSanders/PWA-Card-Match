@@ -1,11 +1,37 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>New TypeScript/SCSS Project</title>
-</head>
-<body>
-  <script src="bundle.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+      rel="stylesheet"
+    />
+    <title>New TypeScript/SCSS Project</title>
+  </head>
+  <body>
+    <div class="game">
+      <header class="gameHeader">
+        <div class="gameInfo">
+          <h1>Card Match</h1>
+          <p>Use your attempts to try to find the matching pairs of cards.</p>
+        </div>
+
+        <div class="gameAttempts">
+          Attempts left: <span id="attempts">2</span>
+        </div>
+      </header>
+
+      <div id="game-board" class="gameBoard"></div>
+
+      <div class="gameFooter">
+        <h2 id="message"></h2>
+        <button id="restart">Start Over!</button>
+      </div>
+    </div>
+
+    <script src="bundle.js"></script>
+  </body>
 </html>
