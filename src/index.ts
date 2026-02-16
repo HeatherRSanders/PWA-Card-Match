@@ -41,7 +41,7 @@ let firstCard: Card | null = null;
 let secondCard: Card | null = null;
 let lockBoard = false;
 
-const board = document.getElementById("game-board") as HTMLDivElement;
+const board = document.getElementById("board") as HTMLDivElement;
 
 // Create deck
 function createDeck(): Card[] {
@@ -75,18 +75,18 @@ function createDeck(): Card[] {
   return shuffle(cards);
 }
 
-// Shuffle taking the entire card array via shorthand, randomizing the array item location
+// Shuffle function, takes the fed array, randomizing the array item location
 function shuffle<T>(array: T[]): T[] {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
+    [array[i], array[j]] = [array[j], array[i]]; //Unsort array via location swaps
   }
   return array;
 }
 
 // Handle card click
 function selectCard(card: Card) {
-  if (lockBoard || card.isFlipped || card.isMatched || gameOver) return;
+  if (lockBoard || card.isFlipped || card.isMatched || gameOver) return; //If game isnt playable or card is flipped already, do nothing.
 
   card.isFlipped = true;
 
@@ -94,33 +94,33 @@ function selectCard(card: Card) {
     firstCard = card;
     render();
     return;
-  }
+  } //if there is no firstcard - set it to card clicked, render, and return.
 
   secondCard = card;
   lockBoard = true;
   render();
 
-  checkMatch();
+  checkMatch(); //On second card clicked, Check if they are a match.
 }
 
 function checkMatch() {
-  if (!firstCard || !secondCard) return;
+  if (!firstCard || !secondCard) return; //Error catching - if called early.
 
   if (firstCard.value === secondCard.value) {
     firstCard.isMatched = true;
     secondCard.isMatched = true;
     resetTurn();
-    checkWin();
+    checkWin(); //If card 1 and 2 match, Check if last cards to match.
   } else {
-    attemptsLeft--;
+    attemptsLeft--; //No match = lose a "life"
     attemptsDisplay.textContent = attemptsLeft.toString();
     setTimeout(() => {
       firstCard!.isFlipped = false;
       secondCard!.isFlipped = false;
       resetTurn();
-      render();
+      render(); //Unflip both cards, render update.
       if (attemptsLeft === 0) {
-        endGame();
+        endGame(); //Game Over
       }
     }, 1000); //How long till the card flips back over when wrong. Felt this is long enough.
     return;
@@ -133,8 +133,9 @@ function resetTurn() {
   firstCard = null;
   secondCard = null;
   lockBoard = false;
-}
+} //Resets turn to a clean state using cards to null and board no longer locked.
 
+//End States
 function checkWin() {
   if (deck.every((card) => card.isMatched)) {
     message.textContent = "You Won!";
@@ -146,7 +147,7 @@ function endGame() {
   message.textContent = "Game Over!";
 }
 
-// Render board
+// Render board - all the game board updates.
 function render() {
   board.innerHTML = "";
 
@@ -182,6 +183,6 @@ function restartGame() {
   attemptsDisplay.textContent = attemptsLeft.toString();
   message.textContent = "";
   render();
-}
+} //Resets attempts, gameover tracking, Set cards back to null to clear them, reset board lockout, recreate a new play deck, reset attempts, clear gameover/win messaging. Render new game.
 
 document.getElementById("restart")!.addEventListener("click", restartGame);
